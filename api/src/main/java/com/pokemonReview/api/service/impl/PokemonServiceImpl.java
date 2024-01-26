@@ -7,6 +7,9 @@ import com.pokemonReview.api.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PokemonServiceImpl implements PokemonService {
     private PokemonRepository repo;
@@ -24,5 +27,15 @@ public class PokemonServiceImpl implements PokemonService {
         repo.save(pokemonToSave);
         // After the save, MySQl has given an id to the newly saved pokemon, we can show the same to the user.
         return pokemonToSave;
+    }
+
+    @Override
+    public List<Pokemon> getAllPokemons() {
+        return repo.findAll();
+    }
+
+    @Override
+    public Optional<Pokemon> findPokemonById(int id) {
+        return repo.findById(id);
     }
 }
