@@ -67,4 +67,19 @@ public class PokemonController {
         return ResponseEntity.ok(pokemons.stream().filter(P -> P.getId() == id).findFirst().get());
     }
 
+    @DeleteMapping("pokemon/{id}")
+    public ResponseEntity<String> removePokemon(@PathVariable int id) {
+        // find the pokemon to delete
+        Optional<Pokemon> pokemonToRemove = pokemons.stream().filter(P -> P.getId() == id).findFirst();
+        if (pokemonToRemove.isPresent()) {
+            // Delete the pokemon
+            pokemons.remove(pokemonToRemove.get());
+            // Return message
+            return ResponseEntity.ok("Pokemon removed :: " + pokemonToRemove.get());
+        } else {
+            // Return not found message
+            return new ResponseEntity<>("Pokemon with id " + id + " - NOT FOUND", HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
