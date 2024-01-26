@@ -1,7 +1,9 @@
 package com.pokemonReview.api.controllers;
 
+import com.pokemonReview.api.dto.PokemonDto;
 import com.pokemonReview.api.models.Pokemon;
-import org.slf4j.LoggerFactory;
+import com.pokemonReview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class PokemonController {
+
+    private PokemonService service;
+
+    @Autowired
+    public PokemonController(PokemonService service){
+        this.service=service;
+    }
 
     // Use ArrayList instead of List because at Post mapping we are trying to dynamically add an element inside the list
     // Since List are immutable collection, we can not do that at runtime. It will throw an error.
@@ -41,12 +50,10 @@ public class PokemonController {
 
     // http://localhost:8080/api/pokemon - Will take a Pokemon JSON object and add it to DB and return that pokemon in POJO with its id.
     @PostMapping("pokemon")
-    public ResponseEntity<Pokemon> addPokemon(@RequestBody Pokemon newPokemon) {
-        // Default id would be 0, change that.
-        newPokemon.setId(pokemons.size() + 1);
-        // Add the pokemon to DB
-        pokemons.add(newPokemon);
-        return new ResponseEntity<>(pokemons.get(pokemons.size() - 1), HttpStatus.CREATED); // Will return an HTTP code of 201 - Created
+    public ResponseEntity<Pokemon> addPokemon(@RequestBody PokemonDto newPokemonDto) {
+        // The user, need not give id while saving the pokemon. MySQL will handle that job.
+        Pokemon savedPokemon = service.savePokemon(newPokemonDto);
+        return ResponseEntity.ok(savedPokemon);
     }
 
     // http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update
