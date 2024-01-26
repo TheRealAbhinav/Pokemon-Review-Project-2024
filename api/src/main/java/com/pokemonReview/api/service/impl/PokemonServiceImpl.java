@@ -13,10 +13,12 @@ import java.util.Optional;
 @Service
 public class PokemonServiceImpl implements PokemonService {
     private PokemonRepository repo;
+
     @Autowired
-    public PokemonServiceImpl(PokemonRepository repo){
-        this.repo=repo;
+    public PokemonServiceImpl(PokemonRepository repo) {
+        this.repo = repo;
     }
+
     @Override
     public Pokemon savePokemon(PokemonDto pokemonDto) {
         // We need to convert pokemon DTO to actual pokemon object

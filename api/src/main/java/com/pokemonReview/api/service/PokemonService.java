@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface PokemonService {
     Pokemon savePokemon(PokemonDto pokemonDto);
+
     List<Pokemon> getAllPokemons();
+
     Optional<Pokemon> findPokemonById(int id);
 }
