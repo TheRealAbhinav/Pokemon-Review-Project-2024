@@ -51,13 +51,20 @@ public class PokemonController {
         return new ResponseEntity<>(pokemons.get(pokemons.size() - 1), HttpStatus.CREATED); // Will return an HTTP code of 201 - Created
     }
 
+    // http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update
     @PutMapping("pokemon/{id}")
     public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon update, @PathVariable int id) {
         if (update.getId() == 0) {
             update.setId(id);
         }
-        pokemons.set(id - 1, update);
-        return ResponseEntity.ok(pokemons.get(id - 1));
+        pokemons.stream()
+                .filter(P -> P.getId() == id) // Find the pokemon to update
+                .findFirst()
+                .ifPresent(oldP -> {
+                    pokemons.remove(oldP); // Remove the old pokemon
+                    pokemons.add(update); // Add the updated pokemon
+                });
+        return ResponseEntity.ok(pokemons.stream().filter(P -> P.getId() == id).findFirst().get());
     }
 
 }
