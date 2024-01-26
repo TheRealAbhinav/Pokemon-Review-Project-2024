@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "Pokemon")
 public class Pokemon {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Primary keys will be incremented by MySQK and not by Hibernate
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Primary keys will be incremented by MySQL and not by Hibernate
     @Column(name = "id")
     private int id;
 
