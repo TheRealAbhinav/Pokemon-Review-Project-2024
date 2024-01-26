@@ -70,6 +70,7 @@ public class PokemonController {
         }
     }
 
+    // http://localhost:8080/api/pokemon/1 - Will remove the pokemon with id 1
     @DeleteMapping("pokemon/{id}")
     public ResponseEntity<String> removePokemon(@PathVariable int id) {
         // find the pokemon to delete
