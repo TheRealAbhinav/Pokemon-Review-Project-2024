@@ -51,4 +51,13 @@ public class PokemonController {
         return new ResponseEntity<>(pokemons.get(pokemons.size() - 1), HttpStatus.CREATED); // Will return an HTTP code of 201 - Created
     }
 
+    @PutMapping("pokemon/{id}")
+    public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon update, @PathVariable int id) {
+        if (update.getId() == 0) {
+            update.setId(id);
+        }
+        pokemons.set(id - 1, update);
+        return ResponseEntity.ok(pokemons.get(id - 1));
+    }
+
 }
