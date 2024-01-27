@@ -11,11 +11,11 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandling {
     @ExceptionHandler(PokemonNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePokemonNotFound(PokemonNotFoundException exception){
+    public ResponseEntity<ErrorResponse> handlePokemonNotFound(PokemonNotFoundException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMsg(exception.getMessage());
         errorResponse.setTimeStamp(new Date());
         errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }

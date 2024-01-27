@@ -1,6 +1,7 @@
 package com.pokemonReview.api.service.impl;
 
 import com.pokemonReview.api.dto.PokemonDto;
+import com.pokemonReview.api.exceptions.PokemonNotFoundException;
 import com.pokemonReview.api.models.Pokemon;
 import com.pokemonReview.api.repository.PokemonRepository;
 import com.pokemonReview.api.service.PokemonService;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PokemonServiceImpl implements PokemonService {
@@ -37,7 +37,28 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
-    public Optional<Pokemon> findPokemonById(int id) {
-        return repo.findById(id);
+    public Pokemon findPokemonById(int id) {
+        return repo.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found by ID ::" + id));
+    }
+
+    @Override
+    public Pokemon updatePokemon(PokemonDto pokemonDto, int id) {
+        // Get the pokemon from DB
+        Pokemon pokemonToUpdate = repo.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found by ID ::" + id + " - Update Failed"));
+        // Perform the updates - Don't change the id
+        pokemonToUpdate.setName(pokemonDto.getName());
+        pokemonToUpdate.setType(pokemonDto.getType());
+        // Save the updated pokemon to DB
+        return repo.save(pokemonToUpdate);
+    }
+
+    @Override
+    public Pokemon removePokemonById(int id) {
+        // Get the pokemon from DB
+        Pokemon pokemonToRemove = repo.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found by ID ::" + id + " - Delete Failed"));
+        // Perform delete
+        repo.delete(pokemonToRemove);
+        // Return the deleted pokemon
+        return pokemonToRemove;
     }
 }
