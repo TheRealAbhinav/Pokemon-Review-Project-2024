@@ -42,7 +42,7 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public PokemonPageResponse getAllPokemons(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Pokemon> pokemonPage = repo.findAll(pageable);
         List<Pokemon> pokemons = pokemonPage.getContent();
 

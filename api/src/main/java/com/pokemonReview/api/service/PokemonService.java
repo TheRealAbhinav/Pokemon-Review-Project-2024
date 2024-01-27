@@ -10,6 +10,7 @@ public interface PokemonService {
     Pokemon savePokemon(PokemonDto pokemonDto);
 
     List<Pokemon> getAllPokemons();
+
     PokemonPageResponse getAllPokemons(int pageNumber, int pageSize);
 
     Pokemon findPokemonById(int id);
