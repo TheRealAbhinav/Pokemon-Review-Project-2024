@@ -22,6 +22,11 @@ public class Reviews {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "start")
-    private int start;
+    @Column(name = "stars")
+    private int stars;
+
+    @ManyToOne(targetEntity = Pokemon.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "Pokemon_id")
+    private Pokemon pokemon;
+
 }
