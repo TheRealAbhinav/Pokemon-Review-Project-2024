@@ -1,6 +1,7 @@
 package com.pokemonReview.api.controllers;
 
 import com.pokemonReview.api.dto.PokemonDto;
+import com.pokemonReview.api.exceptions.PokemonNotFoundException;
 import com.pokemonReview.api.models.Pokemon;
 import com.pokemonReview.api.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,8 @@ public class PokemonController {
     // http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1
     @GetMapping("pokemon/{id}")
     public ResponseEntity<Pokemon> getPokemon(@PathVariable int id) {
-        Optional<Pokemon> pokemon = service.findPokemonById(id);
-        if (pokemon.isPresent()) {
-            return ResponseEntity.ok(pokemon.get());
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        Pokemon pokemon = service.findPokemonById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found with ID :: "+id));
+        return ResponseEntity.ok(pokemon);
     }
 
     // http://localhost:8080/api/pokemon - Will take a Pokemon JSON object and add it to DB and return that pokemon in POJO with its id.
