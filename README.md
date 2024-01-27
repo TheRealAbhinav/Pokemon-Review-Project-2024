@@ -13,6 +13,7 @@ Spring boot youtube project by Teddy Smith - 2024
 
 # REST APIs
 - http://localhost:8080/api/pokemons - Will return all pokemons
+- http://localhost:8080/api/pokemons/page?pageNo=0&pageSize=5 - Will return all pokemons in Pagination format
 - http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1
 - http://localhost:8080/api/pokemon - Will add a pokemon to the DB
 - http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update

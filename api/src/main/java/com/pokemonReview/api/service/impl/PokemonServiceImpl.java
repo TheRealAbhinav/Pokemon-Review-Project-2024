@@ -3,9 +3,13 @@ package com.pokemonReview.api.service.impl;
 import com.pokemonReview.api.dto.PokemonDto;
 import com.pokemonReview.api.exceptions.PokemonNotFoundException;
 import com.pokemonReview.api.models.Pokemon;
+import com.pokemonReview.api.models.PokemonPageResponse;
 import com.pokemonReview.api.repository.PokemonRepository;
 import com.pokemonReview.api.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +38,23 @@ public class PokemonServiceImpl implements PokemonService {
     @Override
     public List<Pokemon> getAllPokemons() {
         return repo.findAll();
+    }
+
+    @Override
+    public PokemonPageResponse getAllPokemons(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<Pokemon> pokemonPage = repo.findAll(pageable);
+        List<Pokemon> pokemons = pokemonPage.getContent();
+
+        PokemonPageResponse pageResponse = new PokemonPageResponse();
+        pageResponse.setContent(pokemons);
+        pageResponse.setPageSize(pokemonPage.getSize());
+        pageResponse.setPageNo(pokemonPage.getNumber());
+        pageResponse.setTotalPages(pokemonPage.getTotalPages());
+        pageResponse.setTotalElement(pokemonPage.getTotalElements());
+        pageResponse.setLast(pokemonPage.isLast());
+
+        return pageResponse;
     }
 
     @Override
