@@ -12,9 +12,18 @@ Spring boot youtube project by Teddy Smith - 2024
 - Postman
 
 # REST APIs
-- http://localhost:8080/api/pokemons - Will return all pokemons
-- http://localhost:8080/api/pokemons/page?pageNo=0&pageSize=5 - Will return all pokemons in Pagination format
-- http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1
-- http://localhost:8080/api/pokemon - Will add a pokemon to the DB
-- http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update
-- http://localhost:8080/api/pokemon/1 - Will remove the pokemon with id 1
+## Pokemons
+- [GET] http://localhost:8080/api/pokemons - Will return all pokemons
+- [GET] http://localhost:8080/api/pokemons/page?pageNo=0&pageSize=5 - Will return all pokemons in Pagination format
+- [GET] http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1
+- [POST] http://localhost:8080/api/pokemon - Will add a pokemon to the DB
+- [PUT] http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update
+- [DELETE] http://localhost:8080/api/pokemon/1 - Will remove the pokemon with id 1
+
+## Reviews
+- [POST] http://localhost:8080/api/pokemons/1/review - Will create a new review for pokemon with id 1
+- [GET] http://localhost:8080/api/pokemons/1/reviews - Will return all the reviews of pokemon with id 1
+- [GET] http://localhost:8080/api/pokemons/reviews/1 - Will return the review with id 1
+- [GET] http://localhost:8080/api/pokemons/1/reviews/2 - Will return the review with id 2 of pokemon with id 1
+- [PUT] http://localhost:8080/api/pokemons/1/reviews/2 - Will perform an update on review of id 2 in pokemon with id 1
+- [DELETE] http://localhost:8080/api/pokemons/1/reviews/2 - Will remove review of id 2 in pokemon with id 1

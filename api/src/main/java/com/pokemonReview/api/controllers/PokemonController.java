@@ -29,11 +29,8 @@ public class PokemonController {
 
     // http://localhost:8080/api/pokemons/page?pageNo=0&pageSize=5 - Will return all pokemons in Pagination format. each page will show 5 records, and we are requesting first page
     @GetMapping("pokemons/page")
-    public ResponseEntity<PokemonPageResponse> getPokemons(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
-    ) {
-        return ResponseEntity.ok(service.getAllPokemons(pageNo,pageSize));
+    public ResponseEntity<PokemonPageResponse> getPokemons(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo, @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return ResponseEntity.ok(service.getAllPokemons(pageNo, pageSize));
     }
 
     // http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1

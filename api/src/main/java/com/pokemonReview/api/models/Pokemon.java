@@ -1,5 +1,6 @@
 package com.pokemonReview.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Pokemon {
     @Column(name = "type")
     private String type;
 
+    @JsonIgnore // We do not want to show this info to user
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Reviews> reviews = new ArrayList<>();
 }

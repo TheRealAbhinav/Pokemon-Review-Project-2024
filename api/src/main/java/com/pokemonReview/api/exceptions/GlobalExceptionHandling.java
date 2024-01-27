@@ -18,4 +18,13 @@ public class GlobalExceptionHandling {
         errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ReviewsNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleReviewsNotFound(ReviewsNotFoundException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMsg(exception.getMessage());
+        errorResponse.setTimeStamp(new Date());
+        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
