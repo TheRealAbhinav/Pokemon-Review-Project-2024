@@ -1,88 +1,60 @@
 package com.pokemonReview.api.controllers;
 
+import com.pokemonReview.api.dto.PokemonDto;
 import com.pokemonReview.api.models.Pokemon;
+import com.pokemonReview.api.models.PokemonPageResponse;
+import com.pokemonReview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class PokemonController {
+    private PokemonService service;
 
-    // Use ArrayList instead of List because at Post mapping we are trying to dynamically add an element inside the list
-    // Since List are immutable collection, we can not do that at runtime. It will throw an error.
-    private ArrayList<Pokemon> pokemons = new ArrayList<>(Arrays.asList(new Pokemon(1, "Pikachu", "Electric"), new Pokemon(2, "Squirtle", "Water"), new Pokemon(3, "Charmander", "Fire"), new Pokemon(4, "Balbasaur", "Leaf")));
+    @Autowired
+    public PokemonController(PokemonService service) {
+        this.service = service;
+    }
 
     // http://localhost:8080/api/pokemons - Will return all pokemons
     @GetMapping("pokemons")
     public ResponseEntity<List<Pokemon>> getPokemons() {
-        // Retrun all pokemons in the DB
-        return ResponseEntity.ok(pokemons);
+        return ResponseEntity.ok(service.getAllPokemons());
+    }
+
+    // http://localhost:8080/api/pokemons/page?pageNo=0&pageSize=5 - Will return all pokemons in Pagination format. each page will show 5 records, and we are requesting first page
+    @GetMapping("pokemons/page")
+    public ResponseEntity<PokemonPageResponse> getPokemons(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo, @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return ResponseEntity.ok(service.getAllPokemons(pageNo, pageSize));
     }
 
     // http://localhost:8080/api/pokemon/1 - Will return pokemon of id 1
     @GetMapping("pokemon/{id}")
     public ResponseEntity<Pokemon> getPokemon(@PathVariable int id) {
-        // Find the pokemon
-        Optional<Pokemon> pokemon = pokemons.stream().filter(P -> P.getId() == id).findFirst();
-        if (pokemon.isPresent()) {
-            // Return the pokemon
-            return ResponseEntity.ok(pokemon.get());
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(service.findPokemonById(id), HttpStatus.FOUND);
     }
 
     // http://localhost:8080/api/pokemon - Will take a Pokemon JSON object and add it to DB and return that pokemon in POJO with its id.
     @PostMapping("pokemon")
-    public ResponseEntity<Pokemon> addPokemon(@RequestBody Pokemon newPokemon) {
-        // Default id would be 0, change that.
-        newPokemon.setId(pokemons.size() + 1);
-        // Add the pokemon to DB
-        pokemons.add(newPokemon);
-        return new ResponseEntity<>(pokemons.get(pokemons.size() - 1), HttpStatus.CREATED); // Will return an HTTP code of 201 - Created
+    public ResponseEntity<Pokemon> addPokemon(@RequestBody PokemonDto newPokemonDto) {
+        return new ResponseEntity<>(service.savePokemon(newPokemonDto), HttpStatus.CREATED);
     }
 
     // http://localhost:8080/api/pokemon/1 - Will update the pokemon with id 1 with the given update
     @PutMapping("pokemon/{id}")
-    public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon update, @PathVariable int id) {
-        if (update.getId() == 0) {
-            // If user has not defined any id, set the ID passed in the path variable
-            // This will prepare a new updated pokemon of ID same as old pokemon
-            update.setId(id);
-        }
-        // Find the pokemon to update
-        Optional<Pokemon> pokemonToUpdate = pokemons.stream().filter(P -> P.getId() == id).findFirst();
-        if (pokemonToUpdate.isPresent()) {
-            // remove that pokemon
-            pokemons.remove(pokemonToUpdate.get());
-            // Add the updated pokemon back to the DB
-            pokemons.add(update);
-            return ResponseEntity.ok(pokemons.get(pokemons.size() - 1));
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Pokemon> updatePokemon(@RequestBody PokemonDto updateDto, @PathVariable int id) {
+        return new ResponseEntity<>(service.updatePokemon(updateDto, id), HttpStatus.ACCEPTED);
     }
 
     // http://localhost:8080/api/pokemon/1 - Will remove the pokemon with id 1
     @DeleteMapping("pokemon/{id}")
     public ResponseEntity<String> removePokemon(@PathVariable int id) {
-        // find the pokemon to delete
-        Optional<Pokemon> pokemonToRemove = pokemons.stream().filter(P -> P.getId() == id).findFirst();
-        if (pokemonToRemove.isPresent()) {
-            // Delete the pokemon
-            pokemons.remove(pokemonToRemove.get());
-            // Return message
-            return ResponseEntity.ok("Pokemon removed :: " + pokemonToRemove.get());
-        } else {
-            // Return not found message
-            return new ResponseEntity<>("Pokemon with id " + id + " - NOT FOUND", HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok("Deleted Pokemon :: " + service.removePokemonById(id));
     }
 
 }

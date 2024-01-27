@@ -1,9 +1,13 @@
 package com.pokemonReview.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data // Will add getters, setters, constructors, toString and other stuff
 @NoArgsConstructor
@@ -22,4 +26,8 @@ public class Pokemon {
 
     @Column(name = "type")
     private String type;
+
+    @JsonIgnore // We do not want to show this info to user
+    @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Reviews> reviews = new ArrayList<>();
 }
