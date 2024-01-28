@@ -1,5 +1,6 @@
 # Pokemon-Review-Project-2024
-Spring boot youtube project by Teddy Smith - 2024
+A simple CRUD application to add, delete, modify and/or fetch a pokemon from database.
+Along with additional functionaltiy to add/delete/fetch/create multiple reviews for a single pokemon.
 
 # Dependencies Used
 ![Alt text](<Screenshot 2024-01-26 at 8.05.43 PM.png>)
