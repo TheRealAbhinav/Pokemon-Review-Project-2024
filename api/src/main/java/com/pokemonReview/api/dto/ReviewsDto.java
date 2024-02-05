@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @ToString
 public class ReviewsDto {
-    private int id;
     private String title;
     private String content;
     private int stars;
