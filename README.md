@@ -28,3 +28,7 @@ Along with additional functionaltiy to add/delete/fetch/create multiple reviews 
 - [GET] http://localhost:8080/api/pokemons/1/reviews/2 - Will return the review with id 2 of pokemon with id 1
 - [PUT] http://localhost:8080/api/pokemons/1/reviews/2 - Will perform an update on review of id 2 in pokemon with id 1
 - [DELETE] http://localhost:8080/api/pokemons/1/reviews/2 - Will remove review of id 2 in pokemon with id 1
+
+# Swagger
+- http://localhost:8080/swagger-ui/index.html#/
+![alt text](<Screenshot 2024-02-05 at 6.03.29 PM.png>)
