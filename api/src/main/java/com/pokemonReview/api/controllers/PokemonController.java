@@ -30,7 +30,10 @@ public class PokemonController {
     // Swagger - To give header for individual API
     @Operation(summary = "Fetch all pokemons", description = "Fetch all pokemons present in the DB")
     // Swagger - To give better message for each response from the API
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All Pokemons fetched successfully!"), @ApiResponse(responseCode = "404", description = "No pokemon present in the DB"),})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All Pokemons fetched successfully!"),
+            @ApiResponse(responseCode = "404", description = "No pokemon present in the DB")}
+    )
     @GetMapping("pokemons")
     public ResponseEntity<List<Pokemon>> getPokemons() {
         return ResponseEntity.ok(service.getAllPokemons());
